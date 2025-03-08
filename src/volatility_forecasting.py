@@ -1,5 +1,7 @@
 import logging
+
 import numpy as np
+
 
 class VolatilityForecasting:
     """Predicts large stock movements based on ATR, implied volatility, and pre-market volume anomalies."""
@@ -20,7 +22,7 @@ class VolatilityForecasting:
         low_close = np.abs(np.array(historical_prices["low"]) - np.array(historical_prices["close"][:-1]))
 
         true_range = np.maximum(high_low, np.maximum(high_close, low_close))
-        atr = np.mean(true_range[-self.atr_window:])
+        atr = np.mean(true_range[-self.atr_window :])
         return round(atr, 2)
 
     def detect_pre_market_anomaly(self, premarket_volume, avg_volume):
@@ -44,23 +46,19 @@ class VolatilityForecasting:
 
         return min(100, risk_score)  # Risk score capped at 100%
 
+
 # Usage Example:
 if __name__ == "__main__":
-    config = {
-        "ai": {
-            "volatility_prediction": {"historical_window": 20}
-        }
-    }
+    config = {"ai": {"volatility_prediction": {"historical_window": 20}}}
 
     vf = VolatilityForecasting(config)
     sample_prices = {
         "high": np.random.uniform(100, 120, 50),
         "low": np.random.uniform(90, 110, 50),
-        "close": np.random.uniform(95, 115, 50)
+        "close": np.random.uniform(95, 115, 50),
     }
     atr_value = vf.calculate_atr(sample_prices)
     print(f"ATR Value: {atr_value}")
 
     volatility_risk = vf.assess_volatility_risk(atr_value, implied_volatility=0.35, premarket_anomaly=True)
     print(f"Volatility Risk Score: {volatility_risk}")
-

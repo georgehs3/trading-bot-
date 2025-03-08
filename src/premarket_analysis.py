@@ -1,7 +1,8 @@
-import logging
 import asyncio
-import numpy as np
+import logging
+
 from src.api.finnhub_client import FinnhubClient
+
 
 class PreMarketAnalysis:
     """Monitors early trends in pre-market trading to detect momentum shifts before market open."""
@@ -44,16 +45,20 @@ class PreMarketAnalysis:
             unusual_activity = self.detect_unusual_premarket_activity(stock["current_price"], stock["previous_close"])
 
             if price_gap and abs(price_gap) > 2.0 and unusual_activity:
-                trade_opportunities.append({
-                    "symbol": stock["symbol"],
-                    "gap_percent": price_gap,
-                    "pre_market_momentum": "Bullish" if price_gap > 0 else "Bearish"
-                })
+                trade_opportunities.append(
+                    {
+                        "symbol": stock["symbol"],
+                        "gap_percent": price_gap,
+                        "pre_market_momentum": ("Bullish" if price_gap > 0 else "Bearish"),
+                    }
+                )
 
         return trade_opportunities
 
+
 # Usage Example:
 if __name__ == "__main__":
+
     async def test():
         finnhub = FinnhubClient("your_finnhub_api_key")
         premarket = PreMarketAnalysis(finnhub)
@@ -62,4 +67,3 @@ if __name__ == "__main__":
         print(premarket_signals)
 
     asyncio.run(test())
-

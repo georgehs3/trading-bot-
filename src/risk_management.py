@@ -1,5 +1,5 @@
 import logging
-import numpy as np
+
 
 class RiskManagement:
     """Handles ATR-based stop-loss, position sizing, and adaptive risk allocation."""
@@ -19,7 +19,8 @@ class RiskManagement:
         """Determines optimal position size based on confidence score and ATR."""
         risk_allocation = self.base_risk_per_trade
         if self.adaptive_risk:
-            risk_allocation *= (confidence_score / 100)  # Higher confidence = larger position
+            # Higher confidence = larger position
+            risk_allocation *= confidence_score / 100
 
         risk_per_share = atr * self.atr_multiplier
         position_size = (account_balance * risk_allocation) / risk_per_share
@@ -36,16 +37,16 @@ class RiskManagement:
             return self.base_risk_per_trade * 0.5  # Reduce risk exposure
         return self.base_risk_per_trade
 
+
 # Usage Example:
 if __name__ == "__main__":
     config = {
         "trading": {
             "position_sizing": {"base_risk_per_trade": 0.02, "adaptive_risk": True},
-            "stop_loss_atr_multiplier": 2.0
+            "stop_loss_atr_multiplier": 2.0,
         }
     }
-    
+
     rm = RiskManagement(config)
     print(rm.calculate_stop_loss(atr=1.5, current_price=100))
     print(rm.calculate_position_size(account_balance=10000, atr=1.5, stock_price=100, confidence_score=80))
-

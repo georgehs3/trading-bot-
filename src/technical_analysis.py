@@ -1,10 +1,9 @@
 import logging
+
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.optim as optim
-from torchvision import transforms
-from torch.utils.data import DataLoader, TensorDataset
+
 
 class CNNPatternRecognition(nn.Module):
     """CNN model for recognizing candlestick patterns in stock charts."""
@@ -23,6 +22,7 @@ class CNNPatternRecognition(nn.Module):
         x = torch.relu(self.fc1(x))
         x = self.fc2(x)
         return x
+
 
 class TechnicalAnalysis:
     """Uses AI for candlestick pattern recognition and trend prediction."""
@@ -48,16 +48,12 @@ class TechnicalAnalysis:
 
         return self.predict_pattern(stock_data)
 
+
 # Usage Example:
 if __name__ == "__main__":
-    config = {
-        "ai": {
-            "model_path": "src/models/cnn_model.pth"
-        }
-    }
+    config = {"ai": {"model_path": "src/models/cnn_model.pth"}}
 
     ta = TechnicalAnalysis(config)
     sample_data = np.random.randn(50)  # Simulated 50-period stock price data
     prediction = ta.analyze_stock(sample_data)
     print(f"Predicted Market Pattern: {prediction}")
-

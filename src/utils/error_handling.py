@@ -1,7 +1,9 @@
 import logging
 import time
-import requests
 import traceback
+
+import requests
+
 
 class ErrorHandling:
     """Handles system errors, API failures, and fallback mechanisms."""
@@ -16,7 +18,11 @@ class ErrorHandling:
         if self.telegram_bot_token and self.telegram_chat_id:
             try:
                 url = f"https://api.telegram.org/bot{self.telegram_bot_token}/sendMessage"
-                data = {"chat_id": self.telegram_chat_id, "text": message, "parse_mode": "Markdown"}
+                data = {
+                    "chat_id": self.telegram_chat_id,
+                    "text": message,
+                    "parse_mode": "Markdown",
+                }
                 response = requests.post(url, json=data)
                 if response.status_code == 200:
                     self.logger.info("Telegram alert sent successfully.")
@@ -32,7 +38,7 @@ class ErrorHandling:
                 return func()
             except Exception as e:
                 self.logger.error(f"Attempt {attempt + 1} failed: {e}")
-                time.sleep(delay * (2 ** attempt))  # Exponential backoff
+                time.sleep(delay * (2**attempt))  # Exponential backoff
         self.logger.error("Operation failed after maximum retries.")
         return None
 
@@ -45,6 +51,7 @@ class ErrorHandling:
 
         self.logger.critical(error_details)
         self.send_alert(error_details)
+
 
 # Usage Example:
 if __name__ == "__main__":
@@ -62,4 +69,3 @@ if __name__ == "__main__":
         raise ValueError("Simulated critical system failure")
     except Exception as e:
         error_handler.handle_critical_failure("System Crash Detected!", e)
-

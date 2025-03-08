@@ -1,5 +1,6 @@
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
 load_dotenv()
@@ -11,11 +12,13 @@ if not DATABASE_URL:
 
 engine = create_engine(DATABASE_URL)
 
+
 class DatabaseConnector:
     def __init__(self):
         self.engine = engine
 
     def get_connection(self):
-        """ Get database connection """
+        """Get database connection"""
         return self.engine.connect()
+
 

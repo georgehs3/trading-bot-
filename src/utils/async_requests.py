@@ -1,12 +1,14 @@
 import asyncio
-import aiohttp
 import logging
+
+import aiohttp
+
 
 class RequestScheduler:
     def __init__(self, rate_limits):
         """
         Initializes the RequestScheduler with rate limits for each API.
-        
+
         :param rate_limits: Dictionary containing rate limits for different APIs.
         """
         self.rate_limits = rate_limits
@@ -26,7 +28,8 @@ class RequestScheduler:
             raise ValueError(f"Unknown API: {api_name}")
 
         async with self.lock:
-            await asyncio.sleep(60 / self.rate_limits[api_name])  # Enforce rate limiting
+            # Enforce rate limiting
+            await asyncio.sleep(60 / self.rate_limits[api_name])
 
         try:
             async with self.session.get(url, params=params) as response:
@@ -38,4 +41,3 @@ class RequestScheduler:
     async def close(self):
         """Closes the session."""
         await self.session.close()
-

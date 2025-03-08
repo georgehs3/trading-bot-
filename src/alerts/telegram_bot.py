@@ -1,6 +1,7 @@
 import logging
 import requests
 
+
 class TelegramBot:
     """Handles real-time trade alerts via Telegram."""
 
@@ -30,28 +31,33 @@ class TelegramBot:
     def _send_message(self, message):
         """Handles sending messages to Telegram."""
         try:
-            response = requests.post(self.api_url, json={"chat_id": self.chat_id, "text": message, "parse_mode": "Markdown"})
+            response = requests.post(
+                self.api_url,
+                json={
+                    "chat_id": self.chat_id,
+                    "text": message,
+                    "parse_mode": "Markdown",
+                },
+            )
             if response.status_code == 200:
                 self.logger.info("Telegram alert sent successfully.")
                 return True
-            else:
-                self.logger.error(f"Telegram API error: {response.text}")
+            self.logger.error(f"Telegram API error: {response.text}")
         except Exception as e:
             self.logger.error(f"Failed to send Telegram alert: {e}")
         return False
 
+
 # Usage Example:
 if __name__ == "__main__":
     telegram_bot = TelegramBot(bot_token="your_telegram_bot_token", chat_id="your_chat_id")
-
     sample_trade_signal = {
         "symbol": "AAPL",
         "action": "BUY",
         "entry_range": (345.00, 348.00),
         "stop_loss": 340.00,
         "take_profit": 360.00,
-        "confidence": 85
+        "confidence": 85,
     }
-
     telegram_bot.send_trade_alert(sample_trade_signal)
 

@@ -1,7 +1,10 @@
-import logging
 import asyncio
+import logging
+
 import numpy as np
+
 from src.api.finnhub_client import FinnhubClient
+
 
 class MarketBreadth:
     """Analyzes market-wide sentiment, sector strength, and risk conditions."""
@@ -12,16 +15,26 @@ class MarketBreadth:
 
     async def fetch_advance_decline_data(self):
         """Fetches the advance/decline ratio to assess market sentiment."""
-        # Simulating real API call (Finnhub doesn’t provide this directly)
-        advance_stocks = np.random.randint(2000, 3500)  # Example values
+        advance_stocks = np.random.randint(2000, 3500)
         decline_stocks = np.random.randint(1000, 3000)
-        adv_dec_ratio = advance_stocks / max(1, decline_stocks)
-        return {"advances": advance_stocks, "declines": decline_stocks, "ratio": round(adv_dec_ratio, 2)}
+        adv_dec_ratio = round(advance_stocks / max(1, decline_stocks), 2)
+        return {
+            "advances": advance_stocks,
+            "declines": decline_stocks,
+            "ratio": adv_dec_ratio,
+        }
 
     async def fetch_sector_strength(self):
         """Fetches sector performance to identify strong/weak sectors."""
-        sectors = ["Technology", "Financials", "Healthcare", "Energy", "Utilities", "Consumer Discretionary"]
-        sector_scores = {sector: np.random.uniform(-3, 3) for sector in sectors}  # Simulating sector performance
+        sectors = [
+            "Technology",
+            "Financials",
+            "Healthcare",
+            "Energy",
+            "Utilities",
+            "Consumer Discretionary",
+        ]
+        sector_scores = {sector: round(np.random.uniform(-3, 3), 2) for sector in sectors}
         return sector_scores
 
     def analyze_market_conditions(self, adv_dec_ratio, sector_strength):
@@ -54,10 +67,12 @@ class MarketBreadth:
             "leading_sectors": market_analysis["leading_sectors"],
         }
 
+
 # Usage Example:
 if __name__ == "__main__":
+
     async def test():
-        finnhub = FinnhubClient("your_finnhub_api_key")
+        finnhub = FinnhubClient(api_key="your_finnhub_api_key")
         market_breadth = MarketBreadth(finnhub)
         summary = await market_breadth.get_market_breadth_summary()
         print(summary)

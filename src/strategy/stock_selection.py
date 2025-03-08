@@ -1,14 +1,23 @@
-import logging
 import asyncio
+import logging
+
 import numpy as np
-from src.api.finnhub_client import FinnhubClient
+
 from src.api.alpha_vantage_client import AlphaVantageClient
+from src.api.finnhub_client import FinnhubClient
 from src.database.db_connector import DatabaseConnector
+
 
 class StockSelection:
     """Selects top 75 stocks dynamically based on liquidity, volatility, institutional flow, and sentiment analysis."""
 
-    def __init__(self, finnhub: FinnhubClient, alpha_vantage: AlphaVantageClient, database: DatabaseConnector, config):
+    def __init__(
+        self,
+        finnhub: FinnhubClient,
+        alpha_vantage: AlphaVantageClient,
+        database: DatabaseConnector,
+        config,
+    ):
         self.finnhub = finnhub
         self.alpha_vantage = alpha_vantage
         self.database = database
@@ -36,7 +45,8 @@ class StockSelection:
             volatility_score = np.random.uniform(1, 3)  # Placeholder for ATR-based volatility
             sentiment_score = sentiment_data.get(stock["symbol"], 50)  # Default neutral sentiment
 
-            institutional_flow = np.random.uniform(0, 100)  # Placeholder for dark pool/institutional flow
+            # Placeholder for dark pool/institutional flow
+            institutional_flow = np.random.uniform(0, 100)
             total_score = (liquidity_score * 0.3) + (volatility_score * 0.2) + (sentiment_score * 0.3) + (institutional_flow * 0.2)
 
             scores.append((stock["symbol"], total_score))
@@ -57,22 +67,28 @@ class StockSelection:
 
         self.logger.info(f"Updated tracked stocks: {selected_stocks}")
 
+
 # Usage Example:
 if __name__ == "__main__":
+
     async def test():
         config = {
             "stock_selection": {
                 "liquidity_threshold": 1000000,
-                "volatility_threshold": 2.0
+                "volatility_threshold": 2.0,
             }
         }
-        
-        db = DatabaseConnector({"type": "postgresql", "connection_string": "postgresql://user:password@localhost/tradingbot"})
+
+        db = DatabaseConnector(
+            {
+                "type": "postgresql",
+                "connection_string": "postgresql://user:password@localhost/tradingbot",
+            }
+        )
         finnhub = FinnhubClient("your_finnhub_api_key")
         alpha_vantage = AlphaVantageClient("your_alpha_vantage_api_key")
         stock_selector = StockSelection(finnhub, alpha_vantage, db, config)
-        
+
         await stock_selector.update_stock_list()
 
     asyncio.run(test())
-

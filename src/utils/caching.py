@@ -1,7 +1,8 @@
-import redis
 import json
 import logging
-import os
+
+import redis
+
 
 class RedisCache:
     """Implements Redis caching to store frequently accessed stock and news data."""
@@ -54,10 +55,10 @@ class RedisCache:
             except Exception as e:
                 self.logger.error(f"Failed to clear Redis cache: {e}")
 
+
 # Usage Example:
 if __name__ == "__main__":
     cache = RedisCache(expiration_time=600)  # Cache expires after 10 minutes
     cache.set_cache("AAPL_stock_price", {"price": 150.25, "volume": 5000000})
     cached_data = cache.get_cache("AAPL_stock_price")
     print(f"Retrieved Cache: {cached_data}")
-

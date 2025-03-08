@@ -1,8 +1,10 @@
 import os
+
 import requests
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 class AlphaVantageClient:
     def __init__(self):
@@ -13,11 +15,11 @@ class AlphaVantageClient:
             raise ValueError("Missing ALPHA_VANTAGE_API_KEY in .env file!")
 
     def get_financial_news(self, tickers="AAPL,GOOGL,MSFT"):
-        """ Fetches financial news headlines for given stock tickers. """
+        """Fetches financial news headlines for given stock tickers."""
         params = {
             "function": "NEWS_SENTIMENT",
             "tickers": tickers,
-            "apikey": self.api_key
+            "apikey": self.api_key,
         }
 
         response = requests.get(self.base_url, params=params)
@@ -25,6 +27,7 @@ class AlphaVantageClient:
             raise Exception(f"Alpha Vantage API Error: {response.text}")
 
         return response.json()
+
 
 # Example usage
 if __name__ == "__main__":

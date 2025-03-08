@@ -1,14 +1,17 @@
-import logging
 import asyncio
-import numpy as np
 import datetime
-from src.api.finnhub_client import FinnhubClient
-from src.api.alpha_vantage_client import AlphaVantageClient
+import logging
+
+import numpy as np
 from transformers import pipeline  # Hugging Face BERT for sentiment analysis
+
+from src.api.alpha_vantage_client import AlphaVantageClient
+from src.api.finnhub_client import FinnhubClient
+
 
 class TradeSignalEngine:
     """Processes stock data, news sentiment, and AI analysis to generate high-confidence trade signals."""
-    
+
     def __init__(self, finnhub: FinnhubClient, alpha_vantage: AlphaVantageClient):
         self.finnhub = finnhub
         self.alpha_vantage = alpha_vantage
@@ -37,7 +40,7 @@ class TradeSignalEngine:
             recency_weight = max(0, 1 - (datetime.datetime.utcnow() - news["date"]).days / 7)  # Decay over a week
             credibility_weight = 1.0 if news["source"] in ["Reuters", "Bloomberg", "CNBC"] else 0.5
             historical_impact = 0.8 if "earnings" in news["headline"].lower() else 0.5  # Higher impact for earnings
-            
+
             trade_score = sentiment_strength * recency_weight * credibility_weight * historical_impact * 100
             sentiment_scores.append(trade_score)
 
@@ -53,16 +56,24 @@ class TradeSignalEngine:
 
             sentiment_score = self.calculate_trade_influence_score(news_sentiment.get(stock["symbol"], []))
 
-            # Basic buy condition: Price breaking resistance, positive sentiment
+            # Basic buy condition: Price breaking resistance, positive
+            # sentiment
             if stock["current_price"] > stock["high_price"] * 0.98 and sentiment_score > 60:
-                trade_signals.append({
-                    "symbol": stock["symbol"],
-                    "action": "BUY",
-                    "entry_range": (stock["current_price"], stock["high_price"] * 1.02),  # VWAP-based range
-                    "stop_loss": stock["low_price"] * 0.98,  # ATR-based stop loss
-                    "take_profit": stock["current_price"] * 1.03,  # 3% profit target
-                    "confidence": sentiment_score
-                })
+                trade_signals.append(
+                    {
+                        "symbol": stock["symbol"],
+                        "action": "BUY",
+                        # VWAP-based range
+                        "entry_range": (
+                            stock["current_price"],
+                            stock["high_price"] * 1.02,
+                        ),
+                        # ATR-based stop loss
+                        "stop_loss": stock["low_price"] * 0.98,
+                        # 3% profit target
+                        "take_profit": stock["current_price"] * 1.03,
+                        "confidence": sentiment_score,
+                    }
+                )
 
         return trade_signals
-
