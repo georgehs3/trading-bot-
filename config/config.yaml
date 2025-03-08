@@ -1,0 +1,16 @@
+settings:
+  use_cache: true
+  log_level: "INFO"
+
+database:
+  type: "postgres"
+  host: "localhost"
+  port: 5432
+  name: "trading_bot"
+  user: "postgres"
+  password: "your_database_password"
+
+api_settings:
+  request_timeout: 10
+  retry_attempts: 3
+

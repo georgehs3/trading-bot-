@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Bot Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .metrics { display: flex; justify-content: center; gap: 30px; margin-top: 20px; }
+        .card { background: #f8f9fa; padding: 20px; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
+
+    <h1>📊 Trading Bot Performance Dashboard</h1>
+    
+    <div class="metrics">
+        <div class="card">
+            <h2>Total Trades</h2>
+            <p id="total_trades">Loading...</p>
+        </div>
+        <div class="card">
+            <h2>Win Rate (%)</h2>
+            <p id="win_rate">Loading...</p>
+        </div>
+        <div class="card">
+            <h2>Avg Profit</h2>
+            <p id="avg_profit">Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        function fetchTradeMetrics() {
+            $.getJSON("/trade-metrics", function(data) {
+                if (!data.error) {
+                    $("#total_trades").text(data.total_trades);
+                    $("#win_rate").text(data.win_rate + "%");
+                    $("#avg_profit").text("$" + data.avg_profit);
+                } else {
+                    console.error("Error fetching metrics.");
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            fetchTradeMetrics();
+            setInterval(fetchTradeMetrics, 5000);  // Refresh every 5 seconds
+        });
+    </script>
+
+</body>
+</html>
+
