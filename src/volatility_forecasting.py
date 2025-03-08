@@ -1,5 +1,4 @@
 import logging
-
 import numpy as np
 
 
@@ -13,13 +12,21 @@ class VolatilityForecasting:
 
     def calculate_atr(self, historical_prices):
         """Calculates Average True Range (ATR) over the configured window."""
-        if len(historical_prices) < self.atr_window:
+        if len(historical_prices["high"]) < self.atr_window:
             self.logger.warning("Not enough historical data for ATR calculation.")
             return None
 
-        high_low = np.abs(np.array(historical_prices["high"]) - np.array(historical_prices["low"]))
-        high_close = np.abs(np.array(historical_prices["high"]) - np.array(historical_prices["close"][:-1]))
-        low_close = np.abs(np.array(historical_prices["low"]) - np.array(historical_prices["close"][:-1]))
+        high_low = np.abs(
+            np.array(historical_prices["high"]) - np.array(historical_prices["low"])
+        )
+        high_close = np.abs(
+            np.array(historical_prices["high"])
+            - np.array(historical_prices["close"][:-1])
+        )
+        low_close = np.abs(
+            np.array(historical_prices["low"])
+            - np.array(historical_prices["close"][:-1])
+        )
 
         true_range = np.maximum(high_low, np.maximum(high_close, low_close))
         atr = np.mean(true_range[-self.atr_window:])
@@ -60,5 +67,7 @@ if __name__ == "__main__":
     atr_value = vf.calculate_atr(sample_prices)
     print(f"ATR Value: {atr_value}")
 
-    volatility_risk = vf.assess_volatility_risk(atr_value, implied_volatility=0.35, premarket_anomaly=True)
+    volatility_risk = vf.assess_volatility_risk(
+        atr_value, implied_volatility=0.35, premarket_anomaly=True
+    )
     print(f"Volatility Risk Score: {volatility_risk}")
