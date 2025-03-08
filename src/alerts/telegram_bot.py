@@ -60,4 +60,3 @@ if __name__ == "__main__":
         "confidence": 85,
     }
     telegram_bot.send_trade_alert(sample_trade_signal)
-

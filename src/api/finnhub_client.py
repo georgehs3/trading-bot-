@@ -21,4 +21,3 @@ class FinnhubClient:
     def get_news_sentiment(self, symbol):
         """Fetch relevant news for sentiment analysis"""
         return self.client.company_news(symbol, _from="2024-01-01", to="2024-12-31")
-

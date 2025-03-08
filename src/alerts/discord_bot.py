@@ -58,4 +58,3 @@ if __name__ == "__main__":
         "confidence": 90,
     }
     discord_bot.send_trade_alert(sample_trade_signal)
-

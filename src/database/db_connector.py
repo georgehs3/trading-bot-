@@ -20,5 +20,3 @@ class DatabaseConnector:
     def get_connection(self):
         """Get database connection"""
         return self.engine.connect()
-
-

@@ -34,4 +34,3 @@ if __name__ == "__main__":
     av_client = AlphaVantageClient()
     news = av_client.get_financial_news()
     print(news)
-
