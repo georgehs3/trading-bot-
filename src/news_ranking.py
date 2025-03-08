@@ -49,7 +49,13 @@ class NewsRanking:
                 continue  # Skip risky news items
 
             # Compute Trade Influence Score
-            trade_score = sentiment_strength * recency_weight * credibility_weight * historical_impact * 100
+            trade_score = (
+                sentiment_strength
+                * recency_weight
+                * credibility_weight
+                * historical_impact
+                * 100
+            )
             sentiment_scores.append(trade_score)
 
         return round(np.mean(sentiment_scores), 2) if sentiment_scores else 0

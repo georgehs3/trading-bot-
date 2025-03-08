@@ -10,7 +10,9 @@ class RedisCache:
     def __init__(self, host="localhost", port=6379, db=0, expiration_time=3600):
         self.logger = logging.getLogger(__name__)
         try:
-            self.redis_client = redis.Redis(host=host, port=port, db=db, decode_responses=True)
+            self.redis_client = redis.Redis(
+                host=host, port=port, db=db, decode_responses=True
+            )
             self.expiration_time = expiration_time  # Default cache expiration: 1 hour
             self.logger.info("Connected to Redis cache successfully.")
         except Exception as e:

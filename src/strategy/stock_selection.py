@@ -42,12 +42,21 @@ class StockSelection:
 
             # Scoring factors
             liquidity_score = stock["current_price"] * stock["previous_close"] * 0.3
-            volatility_score = np.random.uniform(1, 3)  # Placeholder for ATR-based volatility
-            sentiment_score = sentiment_data.get(stock["symbol"], 50)  # Default neutral sentiment
+            volatility_score = np.random.uniform(
+                1, 3
+            )  # Placeholder for ATR-based volatility
+            sentiment_score = sentiment_data.get(
+                stock["symbol"], 50
+            )  # Default neutral sentiment
 
             # Placeholder for dark pool/institutional flow
             institutional_flow = np.random.uniform(0, 100)
-            total_score = (liquidity_score * 0.3) + (volatility_score * 0.2) + (sentiment_score * 0.3) + (institutional_flow * 0.2)
+            total_score = (
+                (liquidity_score * 0.3)
+                + (volatility_score * 0.2)
+                + (sentiment_score * 0.3)
+                + (institutional_flow * 0.2)
+            )
 
             scores.append((stock["symbol"], total_score))
 

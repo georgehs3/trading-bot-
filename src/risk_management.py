@@ -5,7 +5,9 @@ class RiskManagement:
     """Handles ATR-based stop-loss, position sizing, and adaptive risk allocation."""
 
     def __init__(self, config):
-        self.base_risk_per_trade = config["trading"]["position_sizing"]["base_risk_per_trade"]
+        self.base_risk_per_trade = config["trading"]["position_sizing"][
+            "base_risk_per_trade"
+        ]
         self.atr_multiplier = config["trading"]["stop_loss_atr_multiplier"]
         self.adaptive_risk = config["trading"]["position_sizing"]["adaptive_risk"]
         self.logger = logging.getLogger(__name__)
@@ -15,7 +17,9 @@ class RiskManagement:
         stop_loss = round(current_price - (atr * self.atr_multiplier), 2)
         return max(0, stop_loss)  # Ensure stop-loss is positive
 
-    def calculate_position_size(self, account_balance, atr, stock_price, confidence_score):
+    def calculate_position_size(
+        self, account_balance, atr, stock_price, confidence_score
+    ):
         """Determines optimal position size based on confidence score and ATR."""
         risk_allocation = self.base_risk_per_trade
         if self.adaptive_risk:
@@ -49,4 +53,8 @@ if __name__ == "__main__":
 
     rm = RiskManagement(config)
     print(rm.calculate_stop_loss(atr=1.5, current_price=100))
-    print(rm.calculate_position_size(account_balance=10000, atr=1.5, stock_price=100, confidence_score=80))
+    print(
+        rm.calculate_position_size(
+            account_balance=10000, atr=1.5, stock_price=100, confidence_score=80
+        )
+    )

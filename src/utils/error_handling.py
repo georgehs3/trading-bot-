@@ -17,7 +17,9 @@ class ErrorHandling:
         """Sends critical error alerts via Telegram."""
         if self.telegram_bot_token and self.telegram_chat_id:
             try:
-                url = f"https://api.telegram.org/bot{self.telegram_bot_token}/sendMessage"
+                url = (
+                    f"https://api.telegram.org/bot{self.telegram_bot_token}/sendMessage"
+                )
                 data = {
                     "chat_id": self.telegram_chat_id,
                     "text": message,
@@ -47,7 +49,11 @@ class ErrorHandling:
         error_details = f"CRITICAL ERROR: {error_message}\n"
         if exception_obj:
             error_details += f"Exception: {str(exception_obj)}\n"
-            error_details += "".join(traceback.format_exception(None, exception_obj, exception_obj.__traceback__))
+            error_details += "".join(
+                traceback.format_exception(
+                    None, exception_obj, exception_obj.__traceback__
+                )
+            )
 
         self.logger.critical(error_details)
         self.send_alert(error_details)
@@ -55,7 +61,9 @@ class ErrorHandling:
 
 # Usage Example:
 if __name__ == "__main__":
-    error_handler = ErrorHandling(telegram_bot_token="your_telegram_bot_token", telegram_chat_id="your_chat_id")
+    error_handler = ErrorHandling(
+        telegram_bot_token="your_telegram_bot_token", telegram_chat_id="your_chat_id"
+    )
 
     # Example: Retry a failing function
     def sample_failing_function():

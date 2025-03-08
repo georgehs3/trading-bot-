@@ -15,7 +15,9 @@ from src.utils.async_requests import RequestScheduler
 load_dotenv()
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 # Retrieve API keys
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
@@ -37,7 +39,9 @@ rate_limits = {
 
 # Initialize components
 request_scheduler = RequestScheduler(rate_limits)
-trade_signal_engine = TradeSignalEngine(finnhub_client, alpha_vantage_client, request_scheduler)
+trade_signal_engine = TradeSignalEngine(
+    finnhub_client, alpha_vantage_client, request_scheduler
+)
 alert_manager = AlertManager()
 db_connector = DatabaseConnector()
 

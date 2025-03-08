@@ -21,9 +21,21 @@ class DiscordBot:
                     "value": f"{trade_signal['entry_range'][0]:.2f} - {trade_signal['entry_range'][1]:.2f}",
                     "inline": True,
                 },
-                {"name": "🚨 Stop Loss", "value": f"{trade_signal['stop_loss']:.2f}", "inline": True},
-                {"name": "💰 Take Profit", "value": f"{trade_signal['take_profit']:.2f}", "inline": True},
-                {"name": "📊 Confidence Score", "value": f"{trade_signal['confidence']}%", "inline": True},
+                {
+                    "name": "🚨 Stop Loss",
+                    "value": f"{trade_signal['stop_loss']:.2f}",
+                    "inline": True,
+                },
+                {
+                    "name": "💰 Take Profit",
+                    "value": f"{trade_signal['take_profit']:.2f}",
+                    "inline": True,
+                },
+                {
+                    "name": "📊 Confidence Score",
+                    "value": f"{trade_signal['confidence']}%",
+                    "inline": True,
+                },
             ],
             "footer": {"text": "#StockMarket #TradingBot"},
         }

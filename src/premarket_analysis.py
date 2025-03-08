@@ -41,15 +41,21 @@ class PreMarketAnalysis:
             if not stock:
                 continue
 
-            price_gap = self.detect_gaps(stock["current_price"], stock["previous_close"])
-            unusual_activity = self.detect_unusual_premarket_activity(stock["current_price"], stock["previous_close"])
+            price_gap = self.detect_gaps(
+                stock["current_price"], stock["previous_close"]
+            )
+            unusual_activity = self.detect_unusual_premarket_activity(
+                stock["current_price"], stock["previous_close"]
+            )
 
             if price_gap and abs(price_gap) > 2.0 and unusual_activity:
                 trade_opportunities.append(
                     {
                         "symbol": stock["symbol"],
                         "gap_percent": price_gap,
-                        "pre_market_momentum": ("Bullish" if price_gap > 0 else "Bearish"),
+                        "pre_market_momentum": (
+                            "Bullish" if price_gap > 0 else "Bearish"
+                        ),
                     }
                 )
 

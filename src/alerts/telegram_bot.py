@@ -50,7 +50,9 @@ class TelegramBot:
 
 # Usage Example:
 if __name__ == "__main__":
-    telegram_bot = TelegramBot(bot_token="your_telegram_bot_token", chat_id="your_chat_id")
+    telegram_bot = TelegramBot(
+        bot_token="your_telegram_bot_token", chat_id="your_chat_id"
+    )
     sample_trade_signal = {
         "symbol": "AAPL",
         "action": "BUY",

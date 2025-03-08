@@ -37,11 +37,23 @@ class TradeSignalEngine:
         for news in news_data:
             sentiment = self.sentiment_analyzer(news["headline"])[0]
             sentiment_strength = sentiment["score"]
-            recency_weight = max(0, 1 - (datetime.datetime.utcnow() - news["date"]).days / 7)  # Decay over a week
-            credibility_weight = 1.0 if news["source"] in ["Reuters", "Bloomberg", "CNBC"] else 0.5
-            historical_impact = 0.8 if "earnings" in news["headline"].lower() else 0.5  # Higher impact for earnings
+            recency_weight = max(
+                0, 1 - (datetime.datetime.utcnow() - news["date"]).days / 7
+            )  # Decay over a week
+            credibility_weight = (
+                1.0 if news["source"] in ["Reuters", "Bloomberg", "CNBC"] else 0.5
+            )
+            historical_impact = (
+                0.8 if "earnings" in news["headline"].lower() else 0.5
+            )  # Higher impact for earnings
 
-            trade_score = sentiment_strength * recency_weight * credibility_weight * historical_impact * 100
+            trade_score = (
+                sentiment_strength
+                * recency_weight
+                * credibility_weight
+                * historical_impact
+                * 100
+            )
             sentiment_scores.append(trade_score)
 
         return round(np.mean(sentiment_scores), 2) if sentiment_scores else 0
@@ -54,11 +66,16 @@ class TradeSignalEngine:
             if not stock:
                 continue  # Skip invalid data
 
-            sentiment_score = self.calculate_trade_influence_score(news_sentiment.get(stock["symbol"], []))
+            sentiment_score = self.calculate_trade_influence_score(
+                news_sentiment.get(stock["symbol"], [])
+            )
 
             # Basic buy condition: Price breaking resistance, positive
             # sentiment
-            if stock["current_price"] > stock["high_price"] * 0.98 and sentiment_score > 60:
+            if (
+                stock["current_price"] > stock["high_price"] * 0.98
+                and sentiment_score > 60
+            ):
                 trade_signals.append(
                     {
                         "symbol": stock["symbol"],

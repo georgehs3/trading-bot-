@@ -31,7 +31,11 @@ class InstitutionalFlow:
         bearish_options = np.random.randint(1000, 10000)
 
         sentiment_score = round(
-            ((bullish_options - bearish_options) / max(1, bullish_options + bearish_options)) * 100,
+            (
+                (bullish_options - bearish_options)
+                / max(1, bullish_options + bearish_options)
+            )
+            * 100,
             2,
         )
         return {

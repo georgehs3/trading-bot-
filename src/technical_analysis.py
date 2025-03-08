@@ -10,8 +10,12 @@ class CNNPatternRecognition(nn.Module):
 
     def __init__(self):
         super(CNNPatternRecognition, self).__init__()
-        self.conv1 = nn.Conv1d(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1)
-        self.conv2 = nn.Conv1d(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=1)
+        self.conv1 = nn.Conv1d(
+            in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1
+        )
+        self.conv2 = nn.Conv1d(
+            in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=1
+        )
         self.fc1 = nn.Linear(32 * 50, 128)
         self.fc2 = nn.Linear(128, 3)  # 3 categories: Bullish, Neutral, Bearish
 
@@ -30,12 +34,16 @@ class TechnicalAnalysis:
     def __init__(self, config):
         self.logger = logging.getLogger(__name__)
         self.model = CNNPatternRecognition()
-        self.model.load_state_dict(torch.load(config["ai"]["model_path"]))  # Load trained model
+        self.model.load_state_dict(
+            torch.load(config["ai"]["model_path"])
+        )  # Load trained model
         self.model.eval()
 
     def predict_pattern(self, historical_data):
         """Predicts if a stock is in a bullish, neutral, or bearish pattern."""
-        data_tensor = torch.tensor(historical_data, dtype=torch.float32).unsqueeze(0).unsqueeze(0)  # Reshape for CNN
+        data_tensor = (
+            torch.tensor(historical_data, dtype=torch.float32).unsqueeze(0).unsqueeze(0)
+        )  # Reshape for CNN
         output = self.model(data_tensor)
         prediction = torch.argmax(output, dim=1).item()
         return ["Bullish", "Neutral", "Bearish"][prediction]

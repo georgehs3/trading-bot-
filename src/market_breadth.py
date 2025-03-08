@@ -34,7 +34,9 @@ class MarketBreadth:
             "Utilities",
             "Consumer Discretionary",
         ]
-        sector_scores = {sector: round(np.random.uniform(-3, 3), 2) for sector in sectors}
+        sector_scores = {
+            sector: round(np.random.uniform(-3, 3), 2) for sector in sectors
+        }
         return sector_scores
 
     def analyze_market_conditions(self, adv_dec_ratio, sector_strength):
@@ -58,7 +60,9 @@ class MarketBreadth:
         """Returns a summary of current market conditions."""
         adv_dec_data = await self.fetch_advance_decline_data()
         sector_strength = await self.fetch_sector_strength()
-        market_analysis = self.analyze_market_conditions(adv_dec_data["ratio"], sector_strength)
+        market_analysis = self.analyze_market_conditions(
+            adv_dec_data["ratio"], sector_strength
+        )
 
         return {
             "adv_dec_data": adv_dec_data,
