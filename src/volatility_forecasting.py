@@ -29,7 +29,7 @@ class VolatilityForecasting:
         )
 
         true_range = np.maximum(high_low, np.maximum(high_close, low_close))
-        atr = np.mean(true_range[-self.atr_window :])
+        atr = np.mean(true_range[-self.atr_window:])
         return round(atr, 2)
 
     def detect_pre_market_anomaly(self, premarket_volume, avg_volume):
