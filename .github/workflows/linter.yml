@@ -33,7 +33,7 @@ jobs:
 
       - name: Run Flake8 (Check Errors)
         run: |
-          flake8 . --max-line-length 88 --statistics || true
+          flake8 . --max-line-length 88 --statistics || echo "Ignoring Flake8 errors"
 
       - name: Commit and Push Changes if Needed
         run: |
