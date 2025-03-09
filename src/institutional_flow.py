@@ -1,8 +1,6 @@
 import asyncio
 import logging
-
 import numpy as np
-
 from src.api.finnhub_client import FinnhubClient
 
 
@@ -55,17 +53,16 @@ class InstitutionalFlow:
 
         institutional_signals = []
         for dp, opt in zip(dark_pool_data, options_flow_data):
-            if dp["dark_pool_ratio"] > 40 or opt["sentiment_score"] > 50:
-                institutional_signals.append(
-                    {
-                        "symbol": dp["symbol"],
-                        "dark_pool_ratio": dp["dark_pool_ratio"],
-                        "options_sentiment": opt["sentiment_score"],
-                        "institutional_buy_signal": (
-                            dp["dark_pool_ratio"] > 50 or opt["sentiment_score"] > 60
-                        ),
-                    }
-                )
+            institutional_signals.append(
+                {
+                    "symbol": dp["symbol"],
+                    "dark_pool_ratio": dp["dark_pool_ratio"],
+                    "options_sentiment": opt["sentiment_score"],
+                    "institutional_buy_signal": (
+                        dp["dark_pool_ratio"] > 50 or opt["sentiment_score"] > 60
+                    ),
+                }
+            )
 
         return institutional_signals
 

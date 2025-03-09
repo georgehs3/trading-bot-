@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 # Load database credentials from environment variables
 DB_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost/tradingbot")
 
+
 def setup_database():
     """Creates the database tables from the migration SQL file."""
     try:
@@ -28,6 +29,6 @@ def setup_database():
     except Exception as e:
         logger.error(f"Database setup failed: {e}")
 
+
 if __name__ == "__main__":
     setup_database()
-

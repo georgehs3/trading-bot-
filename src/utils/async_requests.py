@@ -12,7 +12,7 @@ class RequestScheduler:
         :param rate_limits: Dictionary containing rate limits for different APIs.
         """
         self.rate_limits = rate_limits
-        self.session = aiohttp.ClientSession()
+        self.session = None  # Delay session creation until needed
         self.request_queues = {api: asyncio.Queue() for api in rate_limits}
         self.lock = asyncio.Lock()
 
@@ -27,6 +27,9 @@ class RequestScheduler:
         if api_name not in self.rate_limits:
             raise ValueError(f"Unknown API: {api_name}")
 
+        if not self.session:
+            self.session = aiohttp.ClientSession()  # Lazy initialization
+
         async with self.lock:
             # Enforce rate limiting
             await asyncio.sleep(60 / self.rate_limits[api_name])
@@ -39,5 +42,7 @@ class RequestScheduler:
             return None
 
     async def close(self):
-        """Closes the session."""
-        await self.session.close()
+        """Closes the session if it's open."""
+        if self.session:
+            await self.session.close()
+

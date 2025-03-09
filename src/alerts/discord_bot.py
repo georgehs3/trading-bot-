@@ -18,7 +18,10 @@ class DiscordBot:
                 {"name": "🎯 Action", "value": trade_signal["action"], "inline": True},
                 {
                     "name": "📌 Entry Range",
-                    "value": f"{trade_signal['entry_range'][0]:.2f} - {trade_signal['entry_range'][1]:.2f}",
+                    "value": (
+                        f"{trade_signal['entry_range'][0]:.2f} - "
+                        f"{trade_signal['entry_range'][1]:.2f}"
+                    ),
                     "inline": True,
                 },
                 {

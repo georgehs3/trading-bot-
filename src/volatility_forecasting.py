@@ -68,6 +68,8 @@ if __name__ == "__main__":
     print(f"ATR Value: {atr_value}")
 
     volatility_risk = vf.assess_volatility_risk(
-        atr_value, implied_volatility=0.35, premarket_anomaly=True
+        atr_value,
+        implied_volatility=0.35,
+        premarket_anomaly=True,
     )
     print(f"Volatility Risk Score: {volatility_risk}")

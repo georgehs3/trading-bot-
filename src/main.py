@@ -40,21 +40,39 @@ rate_limits = {
 # Initialize components
 request_scheduler = RequestScheduler(rate_limits)
 trade_signal_engine = TradeSignalEngine(
-    finnhub_client, alpha_vantage_client, request_scheduler
+    finnhub_client, alpha_vantage_client
 )
 alert_manager = AlertManager()
 db_connector = DatabaseConnector()
+
+# Define the top 50 US stocks dynamically
+stock_list = [
+    "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "BRK.B", "META", "XOM", "UNH",
+    "JNJ", "V", "PG", "JPM", "MA", "HD", "CVX", "PFE", "ABBV", "KO",
+    "PEP", "LLY", "MRK", "BABA", "AVGO", "COST", "DIS", "DHR", "MCD", "ADBE",
+    "CSCO", "NFLX", "NKE", "VZ", "TMO", "INTC", "ABT", "TXN", "AMD", "LIN",
+    "HON", "PYPL", "AMGN", "UNP", "LOW", "BMY", "GS", "BA", "CAT", "IBM"
+]  # ✅ Increased to top 50 US stocks
 
 
 async def main():
     logging.info("Starting trading bot...")
 
     # Fetch market data & analyze trades
-    await trade_signal_engine.run()
+    await trade_signal_engine.run(stock_list)
 
     # Monitor alerts
     await alert_manager.monitor_alerts()
 
 
+async def shutdown():
+    """Cleanup function to close async sessions before exiting."""
+    await request_scheduler.close()
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    finally:
+        asyncio.run(shutdown())  # Ensure the session is properly closed
+

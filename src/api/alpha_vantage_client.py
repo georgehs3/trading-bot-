@@ -1,5 +1,4 @@
 import os
-
 import requests
 from dotenv import load_dotenv
 
@@ -28,9 +27,33 @@ class AlphaVantageClient:
 
         return response.json()
 
+    def get_news_sentiment(self, stock_list):
+        """Fetches news sentiment for multiple stock symbols from Alpha Vantage."""
+        news_sentiment_data = {}
+
+        for symbol in stock_list:
+            params = {
+                "function": "NEWS_SENTIMENT",
+                "tickers": symbol,
+                "apikey": self.api_key,
+            }
+
+            response = requests.get(self.base_url, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                news_sentiment_data[symbol] = data.get("feed", [])
+            else:
+                news_sentiment_data[symbol] = []  # Handle API failures gracefully
+
+        return news_sentiment_data
+
 
 # Example usage
 if __name__ == "__main__":
     av_client = AlphaVantageClient()
     news = av_client.get_financial_news()
     print(news)
+
+    sentiment = av_client.get_news_sentiment(["AAPL", "TSLA"])
+    print(sentiment)
+

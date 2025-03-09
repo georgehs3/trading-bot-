@@ -1,7 +1,7 @@
 import os
-
 import requests
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 
@@ -19,3 +19,11 @@ class AlertManager:
         payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
         response = requests.post(url, json=payload)
         return response.json()
+
+    def monitor_alerts(self):
+        """Mock monitoring function for alerts (Replace with actual alert logic)"""
+        print("Monitoring alerts...")
+        while True:
+            # Example: Check database or API for alerts
+            time.sleep(60)  # Placeholder: Replace with actual monitoring logic
+

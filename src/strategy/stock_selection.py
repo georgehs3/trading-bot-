@@ -1,8 +1,6 @@
 import asyncio
 import logging
-
 import numpy as np
-
 from src.api.alpha_vantage_client import AlphaVantageClient
 from src.api.finnhub_client import FinnhubClient
 from src.database.db_connector import DatabaseConnector

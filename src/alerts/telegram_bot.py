@@ -16,7 +16,8 @@ class TelegramBot:
         message = (
             f"📈 *Trade Alert: {trade_signal['symbol']}*\n"
             f"🎯 *Action:* {trade_signal['action']}\n"
-            f"📌 *Entry Range:* {trade_signal['entry_range'][0]:.2f} - {trade_signal['entry_range'][1]:.2f}\n"
+            f"📌 *Entry Range:* {trade_signal['entry_range'][0]:.2f} - "
+            f"{trade_signal['entry_range'][1]:.2f}\n"
             f"🚨 *Stop Loss:* {trade_signal['stop_loss']:.2f}\n"
             f"💰 *Take Profit:* {trade_signal['take_profit']:.2f}\n"
             f"📊 *Confidence Score:* {trade_signal['confidence']}%\n"

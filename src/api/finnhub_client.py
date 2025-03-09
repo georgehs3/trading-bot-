@@ -1,5 +1,5 @@
+import aiohttp
 import os
-
 import finnhub
 from dotenv import load_dotenv
 
@@ -21,3 +21,19 @@ class FinnhubClient:
     def get_news_sentiment(self, symbol):
         """Fetch relevant news for sentiment analysis"""
         return self.client.company_news(symbol, _from="2024-01-01", to="2024-12-31")
+
+    async def get_stock_price(self, symbol):
+        """Fetches stock price asynchronously using Finnhub API."""
+        async with aiohttp.ClientSession() as session:
+            url = f"https://finnhub.io/api/v1/quote?symbol={symbol}&token={self.api_key}"
+            async with session.get(url) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    return {
+                        "symbol": symbol,
+                        "current_price": data.get("c"),
+                        "high_price": data.get("h"),
+                        "low_price": data.get("l"),
+                    }
+                return None  # Handle API failures gracefully
+

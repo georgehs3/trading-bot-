@@ -1,6 +1,5 @@
 import datetime
 import logging
-
 import numpy as np
 from transformers import pipeline
 
@@ -33,14 +32,12 @@ class NewsRanking:
 
             # Time Decay Function
             news_age = (datetime.datetime.utcnow() - news["date"]).days
-            # Decays over a week
             recency_weight = max(0, 1 - (news_age / self.time_decay_days))
 
             # Source Credibility
             credibility_weight = 1.0 if news["source"] in self.credible_sources else 0.5
 
-            # Historical Impact (earnings and major company news have stronger
-            # influence)
+            # Historical Impact
             historical_impact = 0.8 if "earnings" in news["headline"].lower() else 0.5
 
             # High-Risk Event Filtering

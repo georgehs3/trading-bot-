@@ -1,6 +1,5 @@
 import asyncio
 import logging
-
 from src.api.finnhub_client import FinnhubClient
 
 
@@ -45,7 +44,8 @@ class PreMarketAnalysis:
                 stock["current_price"], stock["previous_close"]
             )
             unusual_activity = self.detect_unusual_premarket_activity(
-                stock["current_price"], stock["previous_close"]
+                stock["current_price"],
+                stock["previous_close"],
             )
 
             if price_gap and abs(price_gap) > 2.0 and unusual_activity:
